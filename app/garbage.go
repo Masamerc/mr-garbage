@@ -1,10 +1,8 @@
-package garbage
+package app
 
 import (
 	"fmt"
 	"strings"
-
-	"github.com/Masamerc/mr-garbage/server/date"
 )
 
 const rightArrow string = "\u27A1"
@@ -103,7 +101,7 @@ func GetGarbageInfoFromUserMessage(userMessage string) string {
 		return conbustiable.FormatMessage(false)
 	// special command
 	case "tomorrow":
-		weekdayTomorrow := date.GetTomorrowWeekDayJst()
+		weekdayTomorrow := GetTomorrowWeekDayJst()
 		return Schedule[weekdayTomorrow].FormatMessage(true)
 
 	default:

@@ -3,12 +3,12 @@ package main
 import (
 	"os"
 
-	"github.com/Masamerc/mr-garbage/server"
+	"github.com/Masamerc/mr-garbage/app"
 )
 
 func main() {
 	port := os.Getenv("PORT")
-	server.Serve(port)
+	app.Serve(port)
 }
 
 // for local test only

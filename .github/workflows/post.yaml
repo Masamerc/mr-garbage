@@ -1,7 +1,6 @@
 on:
   schedule:
     - cron: '0 13 * * 0,1,4,5' # Trigger every Sunday, Monday, Thursday, Friday at 10pm JST
-      timezone: Asia/Tokyo
 jobs:
   send-post-request:
     runs-on: ubuntu-latest

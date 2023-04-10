@@ -1,4 +1,4 @@
-package date
+package app
 
 import (
 	"time"
@@ -14,5 +14,6 @@ func GetTomorrowWeekDayJst() string {
 	// Get the weekday tomorrow in JST
 	jstTime := time.Now().In(jstLocation)
 	jstTimeTomorrow := jstTime.Add(24 * time.Hour)
-	return jstTimeTomorrow.Weekday().String()
+	jstWeekdayTomorrow := jstTimeTomorrow.Weekday().String()
+	return jstWeekdayTomorrow[:3]
 }

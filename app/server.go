@@ -1,4 +1,4 @@
-package server
+package app
 
 import (
 	"encoding/json"
@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Masamerc/mr-garbage/garbage"
-	"github.com/Masamerc/mr-garbage/server/chat"
 	"github.com/gorilla/mux"
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 )
@@ -65,18 +63,18 @@ func BroadcastGarbageInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bot := chat.GetBot()
+	bot := GetBot()
 
 	if requestBody.Day == "Week" {
-		chat.Broadcast(bot, garbage.GetCollectionSchedule())
+		Broadcast(bot, GetCollectionSchedule())
 	} else {
-		garbage := garbage.Schedule[requestBody.Day]
-		chat.Broadcast(bot, garbage.FormatMessage(true))
+		garbage := Schedule[requestBody.Day]
+		Broadcast(bot, garbage.FormatMessage(true))
 	}
 }
 
 func basicReply(w http.ResponseWriter, r *http.Request) {
-	bot := chat.GetBot()
+	bot := GetBot()
 
 	events, err := bot.ParseRequest(r)
 	if err != nil {
@@ -95,9 +93,9 @@ func basicReply(w http.ResponseWriter, r *http.Request) {
 				var replyText string
 
 				if strings.Contains(strings.ToLower(message.Text), "week") {
-					replyText = garbage.GetCollectionSchedule()
+					replyText = GetCollectionSchedule()
 				} else {
-					replyText = garbage.GetGarbageInfoFromUserMessage(message.Text)
+					replyText = GetGarbageInfoFromUserMessage(message.Text)
 				}
 
 				if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyText)).Do(); err != nil {
