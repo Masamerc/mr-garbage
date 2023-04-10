@@ -22,15 +22,15 @@ type RequestBody struct {
 	Day string `json:"day"`
 }
 
-func Serve() {
+func Serve(port string) {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", returnMessage).Methods("GET")
 	r.HandleFunc("/day", BroadcastGarbageInfo).Methods("POST")
 	r.HandleFunc("/callback", basicReply)
 
-	log.Println("Server listening on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Printf("Server listening on port %s\n", port)
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
 
 func returnMessage(w http.ResponseWriter, r *http.Request) {
