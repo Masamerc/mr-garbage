@@ -23,6 +23,4 @@ jobs:
 
       - name: Send POST request
         run: |
-          curl --location --request POST https://mr-garbage.herokuapp.com/day \
-          --header 'Content-Type: application/json' \
-          --data-raw "${{ steps.set_body.outputs.body }}"
+          curl -X POST -H "Content-Type: application/json" -d "${{ steps.set_body.outputs.body }}" https://mr-garbage.herokuapp.com/day
