@@ -1,0 +1,32 @@
+on:
+  schedule:
+    - cron: '0 22 * * 0,1,4,5' # Trigger every Sunday, Monday, Thursday, Friday at 10pm JST
+    timezone: Asia/Tokyo
+jobs:
+  send-post-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set body variable
+        id: set_body
+        run: |
+          if [[ "$(date +%u)" -eq 0 ]]; then
+            echo "::set-output name=body::{\"day\": \"Mon\"}"
+          elif [[ "$(date +%u)" -eq 1 ]]; then
+            echo "::set-output name=body::{\"day\": \"Tue\"}"
+          elif [[ "$(date +%u)" -eq 4 ]]; then
+            echo "::set-output name=body::{\"day\": \"Fri\"}"
+          elif [[ "$(date +%u)" -eq 5 ]]; then
+            echo "::set-output name=body::{\"day\": \"Sat\"}"
+          else
+            echo "::set-output name=body::{\"day\": \"week\"}"
+          fi
+
+      - name: Set URL variable
+        run: |
+          echo "::set-output name=url::https://xxx.com/day"
+
+      - name: Send POST request
+        run: |
+          curl --location --request POST "${{ steps.url.outputs.url }}" \
+          --header 'Content-Type: application/json' \
+          --data-raw "${{ steps.set_body.outputs.body }}"
