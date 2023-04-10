@@ -69,7 +69,7 @@ func BroadcastGarbageInfo(w http.ResponseWriter, r *http.Request) {
 		Broadcast(bot, GetCollectionSchedule())
 	} else {
 		garbage := Schedule[requestBody.Day]
-		Broadcast(bot, garbage.FormatMessage(true))
+		Broadcast(bot, "REMINDER!\n"+garbage.FormatMessage(true))
 	}
 }
 
@@ -95,7 +95,7 @@ func basicReply(w http.ResponseWriter, r *http.Request) {
 				if strings.Contains(strings.ToLower(message.Text), "week") {
 					replyText = GetCollectionSchedule()
 				} else {
-					replyText = "REMINDER!\n" + GetGarbageInfoFromUserMessage(message.Text)
+					replyText = GetGarbageInfoFromUserMessage(message.Text)
 				}
 
 				if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyText)).Do(); err != nil {
