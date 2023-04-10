@@ -23,7 +23,7 @@ jobs:
 
       - name: Set URL variable
         run: |
-          echo "::set-output name=url::https://xxx.com/day"
+          echo "::set-output name=url:: https://mr-garbage.herokuapp.com/day"
 
       - name: Send POST request
         run: |
