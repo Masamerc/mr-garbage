@@ -95,7 +95,7 @@ func basicReply(w http.ResponseWriter, r *http.Request) {
 				if strings.Contains(strings.ToLower(message.Text), "week") {
 					replyText = GetCollectionSchedule()
 				} else {
-					replyText = GetGarbageInfoFromUserMessage(message.Text)
+					replyText = "REMINDER!\n" + GetGarbageInfoFromUserMessage(message.Text)
 				}
 
 				if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyText)).Do(); err != nil {

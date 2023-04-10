@@ -1,6 +1,7 @@
 on:
   schedule:
     - cron: '0 13 * * 0,1,4,5' # Trigger every Sunday, Monday, Thursday, Friday at 10pm JST
+  workflow_dispatch:
 jobs:
   send-post:
     runs-on: ubuntu-latest
