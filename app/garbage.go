@@ -7,6 +7,10 @@ import (
 
 const rightArrow string = "\u27A1"
 
+var helpReponse string = fmt.Sprintf(`To get information from me, you need to provide weekday or garbage type. here are some examples.
+garbage type %s "burnable", "general", "combustible", "cans", "bottles", "plastic"
+weekday %s "Monday", "Tuesday", "Friday"`, rightArrow, rightArrow)
+
 type Garbage struct {
 	Type    string
 	Details string
@@ -71,10 +75,6 @@ func GetCollectionSchedule() string {
 		Schedule["Sat"].FormatMessage(false),
 	)
 }
-
-var helpReponse string = fmt.Sprintf(`To get information from me, you need to provide weekday or garbage type. here are some examples.
-garbage type %s "burnable", "general", "combustible", "cans", "bottles", "plastic"
-weekday %s "Monday", "Tuesday", "Friday"`, rightArrow, rightArrow)
 
 // helper funcs
 func GetGarbageInfoFromUserMessage(userMessage string) string {
