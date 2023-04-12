@@ -72,6 +72,12 @@ func GetCollectionSchedule() string {
 	)
 }
 
+var helpReponse string = fmt.Sprintf(`
+To get information from me, you need to provide weekday or garbage type. here are some examples.
+garbage type %s "burnable", "general", "combustible", "cans", "bottles", "plastic"
+weekday %s "Monday", "Tuesday", "Friday"
+`, rightArrow, rightArrow)
+
 // helper funcs
 func GetGarbageInfoFromUserMessage(userMessage string) string {
 	userMessage = strings.ToLower(strings.ReplaceAll(userMessage, " ", ""))
@@ -103,6 +109,8 @@ func GetGarbageInfoFromUserMessage(userMessage string) string {
 	case "tomorrow":
 		weekdayTomorrow := GetTomorrowWeekDayJst()
 		return Schedule[weekdayTomorrow].FormatMessage(true)
+	case "!help":
+		return helpReponse
 
 	default:
 		return fmt.Sprintf("I am sorry, I have no information regarding %s", strings.ToLower(userMessage))
