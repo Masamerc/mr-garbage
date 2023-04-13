@@ -9,8 +9,7 @@ import (
 func main() {
 	// port := os.Getenv("PORT")
 	// app.Serve(port)
-	weeklyScheduleRaw := garbage.ReadScheduleFromYaml()
-	weeklySchedule := garbage.GetScheduleFromRawSchedule(weeklyScheduleRaw)
+	weeklySchedule := garbage.GetScheduleFromRawSchedule()
 	fmt.Println(weeklySchedule)
 
 }

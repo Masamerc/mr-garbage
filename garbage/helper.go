@@ -13,8 +13,29 @@ var helpReponse string = fmt.Sprintf(`To get information from me, you need to pr
 garbage type %s "burnable", "general", "combustible", "cans", "bottles", "plastic"
 weekday %s "Monday", "Tuesday", "Friday"`, rightArrow, rightArrow)
 
+var stringToGarbage = map[string]Garbage{
+	"burnable":  conbustiable,
+	"plastic":   plastic,
+	"cans":      cansAndBottles,
+	"cardboard": CardboardAndCloth,
+}
+
+func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) string {
+	if garbages := schedule[weekday]; garbages == nil {
+		return "No garbage collection"
+	} else {
+		var returnString string
+		for _, garbage := range garbages {
+			returnString += garbage.FormatMessage(false) + "\n"
+		}
+		return returnString
+	}
+}
+
 func GetGarbageInfoFromUserMessage(userMessage string) string {
+	schedule := GetScheduleFromRawSchedule()
 	userMessage = strings.ToLower(strings.ReplaceAll(userMessage, " ", ""))
+
 	switch userMessage {
 	// by garbage type
 	case "burnable", "general", "combustible":
@@ -25,24 +46,27 @@ func GetGarbageInfoFromUserMessage(userMessage string) string {
 		return "Collection day: Friday"
 	case "cardboard", "cloth":
 		return "Collection day: Friday"
+
 	// by weekday
 	case "monday":
-		return plastic.FormatMessage(false)
+		return getGarbageInfoResponse("Mon", schedule)
 	case "tuesday":
-		return conbustiable.FormatMessage(false)
-	case "wednesday", "thursday", "sunday":
-		return "No garbage collection"
+		return getGarbageInfoResponse("Tue", schedule)
+	case "wednesday":
+		return getGarbageInfoResponse("Wed", schedule)
+	case "thursday":
+		return getGarbageInfoResponse("Thu", schedule)
 	case "friday":
-		return fmt.Sprintf("%s\n%s",
-			cansAndBottles.FormatMessage(false),
-			CardboardAndCloth.FormatMessage(false),
-		)
+		return getGarbageInfoResponse("Fri", schedule)
 	case "saturday":
-		return conbustiable.FormatMessage(false)
+		return getGarbageInfoResponse("Sat", schedule)
+	case "suncday":
+		return getGarbageInfoResponse("Sun", schedule)
+
 	// special command
 	case "tomorrow":
 		weekdayTomorrow := GetTomorrowWeekDayJst()
-		return Schedule[weekdayTomorrow].FormatMessage(true)
+		return getGarbageInfoResponse(weekdayTomorrow, schedule)
 	case "!help":
 		return helpReponse
 
@@ -51,7 +75,7 @@ func GetGarbageInfoFromUserMessage(userMessage string) string {
 	}
 }
 
-func ReadScheduleFromYaml() map[string][]string {
+func ReadRawScheduleFromYaml() map[string][]string {
 	file, err := ioutil.ReadFile("schedule.yaml")
 	if err != nil {
 		log.Fatal(err)
@@ -67,14 +91,9 @@ func ReadScheduleFromYaml() map[string][]string {
 	return data["weekly_schedule"]
 }
 
-var stringToGarbage = map[string]Garbage{
-	"burnable":  conbustiable,
-	"plastic":   plastic,
-	"cans":      cansAndBottles,
-	"cardboard": CardboardAndCloth,
-}
+func GetScheduleFromRawSchedule() map[string][]Garbage {
+	weeklyScheduleRaw := ReadRawScheduleFromYaml()
 
-func GetScheduleFromRawSchedule(weeklyScheduleRaw map[string][]string) map[string][]Garbage {
 	var Schedule = make(map[string][]Garbage)
 	weekdays := []string{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"}
 
