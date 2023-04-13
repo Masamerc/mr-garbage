@@ -26,7 +26,7 @@ func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) strin
 	} else {
 		var returnString string
 		for _, garbage := range garbages {
-			returnString += garbage.FormatMessage(false) + "\n"
+			returnString += garbage.FormatMessage(false) + "\n\n"
 		}
 		return returnString
 	}
