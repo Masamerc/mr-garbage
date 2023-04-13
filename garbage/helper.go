@@ -22,7 +22,7 @@ var stringToGarbage = map[string]Garbage{
 
 func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) string {
 	if garbages := schedule[weekday]; garbages == nil {
-		return "No garbage collection"
+		return "No garbage collection\n"
 	} else {
 		var returnString string
 		for _, garbage := range garbages {
