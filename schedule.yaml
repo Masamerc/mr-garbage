@@ -1,0 +1,12 @@
+weekly_schedule:
+  # mapping should be weekday: [garbage_type_a, garbage_type_b, ...]
+  # garbage types accepted: plastic, burnable, cans, cardboard
+  Mon:
+    - plastic
+  Tue:
+    - burnable
+  Fri:
+    - cans
+    - cardboard
+  Sat:
+    - burnable

@@ -1,15 +1,10 @@
-package app
+package garbage
 
 import (
 	"fmt"
-	"strings"
 )
 
 const rightArrow string = "\u27A1"
-
-var helpReponse string = fmt.Sprintf(`To get information from me, you need to provide weekday or garbage type. here are some examples.
-garbage type %s "burnable", "general", "combustible", "cans", "bottles", "plastic"
-weekday %s "Monday", "Tuesday", "Friday"`, rightArrow, rightArrow)
 
 type Garbage struct {
 	Type    string
@@ -74,43 +69,4 @@ func GetCollectionSchedule() string {
 		CardboardAndCloth.FormatMessage(false),
 		Schedule["Sat"].FormatMessage(false),
 	)
-}
-
-// helper funcs
-func GetGarbageInfoFromUserMessage(userMessage string) string {
-	userMessage = strings.ToLower(strings.ReplaceAll(userMessage, " ", ""))
-	switch userMessage {
-	// by garbage type
-	case "burnable", "general", "combustible":
-		return "Collection day: Tuesday & Saturday"
-	case "plastic", "packaging":
-		return "Collection day: Monday"
-	case "cans", "bottles":
-		return "Collection day: Friday"
-	case "cardboard", "cloth":
-		return "Collection day: Friday"
-	// by weekday
-	case "monday":
-		return plastic.FormatMessage(false)
-	case "tuesday":
-		return conbustiable.FormatMessage(false)
-	case "wednesday", "thursday", "sunday":
-		return "No garbage collection"
-	case "friday":
-		return fmt.Sprintf("%s\n%s",
-			cansAndBottles.FormatMessage(false),
-			CardboardAndCloth.FormatMessage(false),
-		)
-	case "saturday":
-		return conbustiable.FormatMessage(false)
-	// special command
-	case "tomorrow":
-		weekdayTomorrow := GetTomorrowWeekDayJst()
-		return Schedule[weekdayTomorrow].FormatMessage(true)
-	case "!help":
-		return helpReponse
-
-	default:
-		return fmt.Sprintf("I am sorry, I have no information regarding %s", strings.ToLower(userMessage))
-	}
 }

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/Masamerc/mr-garbage/garbage"
 	"github.com/gorilla/mux"
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 )
@@ -66,9 +67,9 @@ func BroadcastGarbageInfo(w http.ResponseWriter, r *http.Request) {
 	bot := GetBot()
 
 	if requestBody.Day == "Week" {
-		Broadcast(bot, GetCollectionSchedule())
+		Broadcast(bot, garbage.GetCollectionSchedule())
 	} else {
-		garbage := Schedule[requestBody.Day]
+		garbage := garbage.Schedule[requestBody.Day]
 		Broadcast(bot, "REMINDER!\n"+garbage.FormatMessage(true))
 	}
 }
@@ -93,9 +94,9 @@ func basicReply(w http.ResponseWriter, r *http.Request) {
 				var replyText string
 
 				if strings.Contains(strings.ToLower(message.Text), "week") {
-					replyText = GetCollectionSchedule()
+					replyText = garbage.GetCollectionSchedule()
 				} else {
-					replyText = GetGarbageInfoFromUserMessage(message.Text)
+					replyText = garbage.GetGarbageInfoFromUserMessage(message.Text)
 				}
 
 				if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyText)).Do(); err != nil {
