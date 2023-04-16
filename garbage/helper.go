@@ -26,7 +26,7 @@ func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) strin
 	} else {
 		var returnString string
 		for _, garbage := range garbages {
-			returnString += garbage.FormatMessage(false) + "\n\n"
+			returnString += garbage.FormatMessage(false) + "\n"
 		}
 		return returnString
 	}
@@ -34,18 +34,19 @@ func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) strin
 
 func GetGarbageInfoFromUserMessage(userMessage string) string {
 	schedule := GetScheduleFromRawSchedule()
+	reverseSchedule := reverseMap(schedule)
 	userMessage = strings.ToLower(strings.ReplaceAll(userMessage, " ", ""))
 
 	switch userMessage {
 	// by garbage type
 	case "burnable", "general", "combustible":
-		return "Collection day: Tuesday & Saturday"
+		return getCollectionDays(reverseSchedule, conbustiable)
 	case "plastic", "packaging":
-		return "Collection day: Monday"
+		return getCollectionDays(reverseSchedule, plastic)
 	case "cans", "bottles":
-		return "Collection day: Friday"
+		return getCollectionDays(reverseSchedule, cansAndBottles)
 	case "cardboard", "cloth":
-		return "Collection day: Friday"
+		return getCollectionDays(reverseSchedule, CardboardAndCloth)
 
 	// by weekday
 	case "monday":
@@ -105,4 +106,25 @@ func GetScheduleFromRawSchedule() map[string][]Garbage {
 	}
 
 	return Schedule
+}
+
+func reverseMap(inputMap map[string][]Garbage) map[Garbage][]string {
+	outputMap := make(map[Garbage][]string)
+
+	for key, values := range inputMap {
+		for _, value := range values {
+			outputMap[value] = append(outputMap[value], key)
+		}
+	}
+
+	return outputMap
+}
+
+func getCollectionDays(reverseSchedule map[Garbage][]string, garbage Garbage) string {
+	returnString := "Collection day: \n"
+	collection_days := reverseSchedule[garbage]
+	for _, weekday := range collection_days {
+		returnString += weekday + "\n"
+	}
+	return returnString
 }
