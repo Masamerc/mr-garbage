@@ -142,7 +142,7 @@ func getCollectionDays(reverseSchedule map[Garbage][]string, garbage Garbage) st
 			returnString.WriteString(fmt.Sprintf("- %s\n", weekday))
 		}
 	}
-	return removeLastLines(returnString.String(), 1)
+	return returnString.String()
 }
 
 func removeLastLines(s string, n int) string {
