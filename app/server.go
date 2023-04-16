@@ -5,7 +5,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/Masamerc/mr-garbage/garbage"
 	"github.com/gorilla/mux"
@@ -90,20 +89,12 @@ func basicReply(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	schedule := garbage.GetScheduleFromRawSchedule()
-
 	for _, event := range events {
 		if event.Type == linebot.EventTypeMessage {
 			switch message := event.Message.(type) {
 			case *linebot.TextMessage:
 				var replyText string
-
-				if strings.Contains(strings.ToLower(message.Text), "week") {
-					replyText = garbage.GetWeeklySchedule(schedule)
-				} else {
-					replyText = garbage.GetGarbageInfoFromUserMessage(message.Text)
-				}
-
+				replyText = garbage.GetGarbageInfoFromUserMessage(message.Text)
 				if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyText)).Do(); err != nil {
 					log.Print(err)
 				}

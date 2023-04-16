@@ -73,6 +73,8 @@ func GetGarbageInfoFromUserMessage(userMessage string) string {
 		return getGarbageInfoResponse("Sun", schedule)
 
 	// special command
+	case "week":
+		return GetWeeklySchedule(schedule)
 	case "tomorrow":
 		weekdayTomorrow := GetTomorrowWeekDayJst()
 		return getGarbageInfoResponse(weekdayTomorrow, schedule)
@@ -109,7 +111,7 @@ func GetScheduleFromRawSchedule() map[string][]Garbage {
 	for _, weekday := range weekdays {
 		garbageTypes := weeklyScheduleRaw[weekday]
 		for _, garbageType := range garbageTypes {
-			Schedule[weekday] = append(Schedule[weekday], stringToGarbage[garbageType])
+			schedule[weekday] = append(schedule[weekday], stringToGarbage[garbageType])
 		}
 	}
 
@@ -147,6 +149,6 @@ func GetWeeklySchedule(schedule map[string][]Garbage) string {
 		for _, garbage := range garbages {
 			returnString += garbage.FormatMessage(false)
 		}
-
 	}
+	return returnString
 }
