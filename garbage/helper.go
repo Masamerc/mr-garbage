@@ -23,13 +23,19 @@ var stringToGarbage = map[string]Garbage{
 func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) string {
 	if garbages := schedule[weekday]; garbages == nil {
 		return "No garbage collection\n"
+	
+	var returnString string
+
+	if len(garbages) >= 2 {
+		newLineChar := "\n\n"
 	} else {
-		var returnString string
-		for _, garbage := range garbages {
-			returnString += garbage.FormatMessage(false) + "\n"
-		}
-		return returnString
+		newLineChar := ""
 	}
+	for _, garbage := range garbages {
+		returnString += garbage.FormatMessage(false) + newLineChar
+	}
+	return returnString
+	
 }
 
 func GetGarbageInfoFromUserMessage(userMessage string) string {
@@ -124,7 +130,7 @@ func getCollectionDays(reverseSchedule map[Garbage][]string, garbage Garbage) st
 	returnString := "Collection day: \n"
 	collection_days := reverseSchedule[garbage]
 	for _, weekday := range collection_days {
-		returnString += weekday + "\n"
+		returnString += fmt.Sprintf("- %s\n", weekday)
 	}
 	return returnString
 }
