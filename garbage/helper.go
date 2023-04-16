@@ -147,7 +147,7 @@ func GetWeeklySchedule(schedule map[string][]Garbage) string {
 	for weekday, garbages := range schedule {
 		returnString += fmt.Sprintf("%s:\n", weekday)
 		for _, garbage := range garbages {
-			returnString += garbage.FormatMessage(false)
+			returnString += fmt.Sprintf("%s\n", garbage.FormatMessage(false))
 		}
 	}
 	return returnString
