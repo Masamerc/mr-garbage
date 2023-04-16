@@ -27,12 +27,13 @@ func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) strin
 	}
 	var returnString string
 	var newLineChar string
-	if len(garbages) >= 2 {
-		newLineChar = "\n\n"
-	} else {
-		newLineChar = ""
-	}
-	for _, garbage := range garbages {
+
+	for index, garbage := range garbages {
+		if index == len(garbages)-1 {
+			newLineChar = ""
+		} else {
+			newLineChar = "\n\n"
+		}
 		returnString += garbage.FormatMessage(false) + newLineChar
 	}
 	return returnString
