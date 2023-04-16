@@ -82,7 +82,7 @@ func GetGarbageInfoFromUserMessage(userMessage string) string {
 		return helpReponse
 
 	default:
-		return fmt.Sprintf("I am sorry, I have no information regarding %s", strings.ToLower(userMessage))
+		return fmt.Sprintf("I am sorry, I have no information regarding %s\n\n%s", strings.ToLower(userMessage), helpReponse)
 	}
 }
 
