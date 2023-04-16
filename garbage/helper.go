@@ -25,7 +25,7 @@ func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) strin
 	if garbages == nil {
 		return "No garbage collection\n"
 	}
-	var returnString string
+	var returnString strings.Builder
 	var newLineChar string
 
 	for index, garbage := range garbages {
@@ -34,9 +34,9 @@ func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) strin
 		} else {
 			newLineChar = "\n\n"
 		}
-		returnString += garbage.FormatMessage(false) + newLineChar
+		returnString.WriteString(fmt.Sprintf("%s%s", garbage.FormatMessage(false), newLineChar))
 	}
-	return returnString
+	return returnString.String()
 
 }
 
@@ -131,24 +131,40 @@ func reverseMap(inputMap map[string][]Garbage) map[Garbage][]string {
 }
 
 func getCollectionDays(reverseSchedule map[Garbage][]string, garbage Garbage) string {
-	returnString := "Collection day: \n"
+	var returnString strings.Builder
+	returnString.WriteString("Collection day: \n")
+
 	collection_days := reverseSchedule[garbage]
 	for index, weekday := range collection_days {
 		if index == len(collection_days)-1 {
-			returnString += fmt.Sprintf("- %s", weekday)
+			returnString.WriteString(fmt.Sprintf("- %s", weekday))
 		}
-		returnString += fmt.Sprintf("- %s\n", weekday)
+		returnString.WriteString(fmt.Sprintf("- %s\n", weekday))
 	}
-	return returnString
+	return removeLastLines(returnString.String(), 1)
+}
+
+func removeLastLines(s string, n int) string {
+	lines := strings.Split(s, "\n")
+	if len(lines) > 0 {
+		lines = lines[:len(lines)-n]
+	}
+	return strings.Join(lines, "\n")
 }
 
 func GetWeeklySchedule(schedule map[string][]Garbage) string {
-	var returnString string
+	var returnString strings.Builder
 	for weekday, garbages := range schedule {
-		returnString += fmt.Sprintf("%s:\n", weekday)
-		for _, garbage := range garbages {
-			returnString += fmt.Sprintf("%s\n", garbage.FormatMessage(false))
+		returnString.WriteString(fmt.Sprintf("%s:\n", weekday))
+		for index, garbage := range garbages {
+			var newlineChar string
+			if index == len(garbages)-1 { // last garbage item
+				newlineChar = "\n"
+			} else {
+				newlineChar = "\n\n"
+			}
+			returnString.WriteString(fmt.Sprintf("%s%s", garbage.FormatMessage(false), newlineChar))
 		}
 	}
-	return returnString
+	return removeLastLines(returnString.String(), 2)
 }
