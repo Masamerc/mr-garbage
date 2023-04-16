@@ -138,8 +138,9 @@ func getCollectionDays(reverseSchedule map[Garbage][]string, garbage Garbage) st
 	for index, weekday := range collection_days {
 		if index == len(collection_days)-1 {
 			returnString.WriteString(fmt.Sprintf("- %s", weekday))
+		} else {
+			returnString.WriteString(fmt.Sprintf("- %s\n", weekday))
 		}
-		returnString.WriteString(fmt.Sprintf("- %s\n", weekday))
 	}
 	return removeLastLines(returnString.String(), 1)
 }
@@ -159,9 +160,9 @@ func GetWeeklySchedule(schedule map[string][]Garbage) string {
 		for index, garbage := range garbages {
 			var newlineChar string
 			if index == len(garbages)-1 { // last garbage item
-				newlineChar = "\n"
-			} else {
 				newlineChar = "\n\n"
+			} else {
+				newlineChar = "\n"
 			}
 			returnString.WriteString(fmt.Sprintf("%s%s", garbage.FormatMessage(false), newlineChar))
 		}
