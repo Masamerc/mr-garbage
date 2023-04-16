@@ -103,7 +103,7 @@ func ReadRawScheduleFromYaml() map[string][]string {
 func GetScheduleFromRawSchedule() map[string][]Garbage {
 	weeklyScheduleRaw := ReadRawScheduleFromYaml()
 
-	var Schedule = make(map[string][]Garbage)
+	var schedule = make(map[string][]Garbage)
 	weekdays := []string{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"}
 
 	for _, weekday := range weekdays {
@@ -113,7 +113,7 @@ func GetScheduleFromRawSchedule() map[string][]Garbage {
 		}
 	}
 
-	return Schedule
+	return schedule
 }
 
 func reverseMap(inputMap map[string][]Garbage) map[Garbage][]string {
@@ -131,8 +131,22 @@ func reverseMap(inputMap map[string][]Garbage) map[Garbage][]string {
 func getCollectionDays(reverseSchedule map[Garbage][]string, garbage Garbage) string {
 	returnString := "Collection day: \n"
 	collection_days := reverseSchedule[garbage]
-	for _, weekday := range collection_days {
+	for index, weekday := range collection_days {
+		if index == len(collection_days)-1 {
+			returnString += fmt.Sprintf("- %s", weekday)
+		}
 		returnString += fmt.Sprintf("- %s\n", weekday)
 	}
 	return returnString
+}
+
+func GetWeeklySchedule(schedule map[string][]Garbage) string {
+	var returnString string
+	for weekday, garbages := range schedule {
+		returnString += fmt.Sprintf("%s:\n", weekday)
+		for _, garbage := range garbages {
+			returnString += garbage.FormatMessage(false)
+		}
+
+	}
 }

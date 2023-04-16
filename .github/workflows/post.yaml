@@ -9,7 +9,7 @@ jobs:
       - name: Set body variable
         id: set_body
         run: |
-          if [[ "$(date +%u)" -eq 0 ]]; then
+          if [[ "$(date +%u)" -eq 7 ]]; then
             echo "::set-output name=body::{\"day\": \"Mon\"}"
           elif [[ "$(date +%u)" -eq 1 ]]; then
             echo "::set-output name=body::{\"day\": \"Tue\"}"
@@ -18,7 +18,7 @@ jobs:
           elif [[ "$(date +%u)" -eq 5 ]]; then
             echo "::set-output name=body::{\"day\": \"Sat\"}"
           else
-            echo "::set-output name=body::{\"day\": \"week\"}"
+            echo "::set-output name=body::{\"day\": \"Week\"}"
           fi
 
       - name: Send POST request

@@ -51,22 +51,3 @@ var CardboardAndCloth Garbage = Garbage{
 	Details: "cardboard boxes and old cloth",
 	Emoji:   "\U0001F4E6",
 }
-
-// collection schedule
-var Schedule = map[string]Garbage{
-	"Mon": plastic,
-	"Tue": conbustiable,
-	"Fri": cansAndBottles,
-	"Sat": conbustiable,
-}
-
-func GetCollectionSchedule() string {
-	return fmt.Sprintf(
-		"MONDAY:\n%s\n\nTUESDAY:\n%s\n\nFRIDAY:\n%s\n%s\n\nSATURDAY:\n%s",
-		Schedule["Mon"].FormatMessage(false),
-		Schedule["Tue"].FormatMessage(false),
-		Schedule["Fri"].FormatMessage(false),
-		CardboardAndCloth.FormatMessage(false),
-		Schedule["Sat"].FormatMessage(false),
-	)
-}
