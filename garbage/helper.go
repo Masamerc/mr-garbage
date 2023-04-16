@@ -21,21 +21,22 @@ var stringToGarbage = map[string]Garbage{
 }
 
 func getGarbageInfoResponse(weekday string, schedule map[string][]Garbage) string {
-	if garbages := schedule[weekday]; garbages == nil {
+	garbages := schedule[weekday]
+	if garbages == nil {
 		return "No garbage collection\n"
-	
+	}
 	var returnString string
-
+	var newLineChar string
 	if len(garbages) >= 2 {
-		newLineChar := "\n\n"
+		newLineChar = "\n\n"
 	} else {
-		newLineChar := ""
+		newLineChar = ""
 	}
 	for _, garbage := range garbages {
 		returnString += garbage.FormatMessage(false) + newLineChar
 	}
 	return returnString
-	
+
 }
 
 func GetGarbageInfoFromUserMessage(userMessage string) string {
